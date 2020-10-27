@@ -28,12 +28,14 @@ class SkipActiveFragment: Fragment() {
         super.onResume()
         if (blackoutMode) {
             (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
+            activity?.window?.statusBarColor = activity?.resources?.getColor(R.color.blackout)!!
         }
     }
 
     override fun onStop() {
         super.onStop()
         (activity as AppCompatActivity?)!!.supportActionBar!!.show()
+        activity?.window?.statusBarColor = activity?.resources?.getColor(R.color.colorPrimaryDark)!!
     }
 
     override fun onCreateView(
