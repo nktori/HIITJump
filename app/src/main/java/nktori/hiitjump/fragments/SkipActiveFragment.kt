@@ -1,5 +1,6 @@
 package nktori.hiitjump.fragments
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.LayoutInflater
@@ -21,6 +22,7 @@ class SkipActiveFragment: Fragment() {
     private var loopSeconds = 0
     private var activityIndex = 0
     private var currentActivity = skipDifficulty.workout.activities[activityIndex]
+    private var isRunning = false
 
     override fun onResume() {
         super.onResume()
@@ -49,6 +51,7 @@ class SkipActiveFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         view.findViewById<Button>(R.id.button_skip_stop).setOnClickListener {
+            isRunning = false
             findNavController().navigate(R.id.action_SkipActiveFragment_to_SkipFragment)
         }
 
@@ -58,11 +61,14 @@ class SkipActiveFragment: Fragment() {
     }
 
     private fun workoutTimer(view: View) {
+        isRunning = true
         val skipTimeCount = view.findViewById<TextView>(R.id.skipTimeCount)
         val currentActivityNameView = view.findViewById<TextView>(R.id.currentActivityName)
         val currentActivityTimeView = view.findViewById<TextView>(R.id.currentActivityTime)
+        MediaPlayer.create(this.context, currentActivity.audioFile).start()
         object : CountDownTimer((skipDifficulty.workout.getTotalLength() * 1000).toLong(), 1000) {
             override fun onTick(millisUntilFinished: Long) {
+                if (!isRunning) this.cancel()
                 setTime(skipTimeCount, totalSeconds)
                 setActivity(currentActivityNameView, currentActivityTimeView)
                 totalSeconds++
@@ -86,6 +92,8 @@ class SkipActiveFragment: Fragment() {
             }
             currentActivity = skipDifficulty.workout.activities[activityIndex]
             nameView.text = currentActivity.name
+
+            MediaPlayer.create(this.context, currentActivity.audioFile).start()
         }
         timeView.text = (currentActivity.length - loopSeconds).toString()
     }
