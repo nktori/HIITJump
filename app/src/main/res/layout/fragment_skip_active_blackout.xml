@@ -4,25 +4,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#000000"
     tools:context="nktori.hiitjump.fragments.SkipFragment">
 
     <TextView
-        android:id="@+id/skipDifficultyText"
+        android:id="@+id/currentActivityName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="600dp"
+        android:text=""
         android:textSize="40sp"
+        android:textColor="#6C6C6C"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.50"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/workoutLengthText"
+        android:id="@+id/currentActivityTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="550dp"
-        android:textSize="30sp"
+        android:text=""
+        android:textSize="40sp"
+        android:textColor="#6C6C6C"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.50"
@@ -31,47 +36,63 @@
     <RelativeLayout
         android:id="@+id/relativeLayout1"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        tools:layout_editor_absoluteX="97dp"
-        tools:layout_editor_absoluteY="76dp">
-
+        android:layout_height="fill_parent">
         <Button
-            android:id="@+id/button_skip_start"
+            android:id="@+id/button_skip_stop"
             android:layout_width="250dp"
             android:layout_height="250dp"
             android:layout_centerInParent="true"
             android:layout_marginBottom="30dp"
-            android:background="@drawable/round_button_green"
-            android:text="@string/start"
+            android:background="#000000"
+            android:text="@string/stop"
             android:textSize="50sp"
+            android:textColor="#000000"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.50"
             app:layout_constraintStart_toStartOf="parent" />
-
     </RelativeLayout>
 
-    <CheckBox
-        android:id="@+id/checkbox_blackout"
+    <TextView
+        android:id="@+id/skipTimeCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="175dp"
-        android:text="@string/blackoutMode"
-        android:onClick="onCheckboxClicked"
+        android:layout_marginBottom="100dp"
+        android:layout_marginEnd="120dp"
+        android:text="@string/timeCounter"
+        android:textSize="40sp"
+        android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.50"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/button_skip_back"
+    <TextView
+        android:id="@+id/skipTimeDivider"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
-        android:text="@string/back"
+        android:layout_marginBottom="100dp"
+        android:text="@string/timeDivider"
+        android:textSize="40sp"
+        android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.50"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/skipTimeTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="100dp"
+        android:layout_marginStart="120dp"
+        android:text="00:00"
+        android:textSize="40sp"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.50"
+        app:layout_constraintStart_toStartOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

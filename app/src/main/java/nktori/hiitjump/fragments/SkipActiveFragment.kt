@@ -7,10 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import nktori.hiitjump.common.formatTime
 import nktori.hiitjump.R
+import nktori.hiitjump.blackoutMode
+import nktori.hiitjump.common.formatTime
 import nktori.hiitjump.skipDifficulty
 
 class SkipActiveFragment: Fragment() {
@@ -20,11 +22,27 @@ class SkipActiveFragment: Fragment() {
     private var activityIndex = 0
     private var currentActivity = skipDifficulty.workout.activities[activityIndex]
 
+    override fun onResume() {
+        super.onResume()
+        if (blackoutMode) {
+            (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        (activity as AppCompatActivity?)!!.supportActionBar!!.show()
+    }
+
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_skip_active, container, false)
+        var layout = R.layout.fragment_skip_active
+        if (blackoutMode) {
+            layout = R.layout.fragment_skip_active_blackout
+        }
+        return inflater.inflate(layout, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
