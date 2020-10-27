@@ -7,7 +7,7 @@
     tools:context="nktori.hiitjump.fragments.SkipFragment">
 
     <TextView
-        android:id="@+id/currentActivityName"
+        android:id="@+id/currentExerciseName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="600dp"
@@ -19,7 +19,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/currentActivityTime"
+        android:id="@+id/currentExerciseTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="550dp"

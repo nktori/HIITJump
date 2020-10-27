@@ -1,14 +1,14 @@
 package nktori.hiitjump.skip.workout
 
-import nktori.hiitjump.skip.activity.BOXER
-import nktori.hiitjump.skip.activity.CRISS_CROSS
-import nktori.hiitjump.skip.activity.HIGH_HARD
-import nktori.hiitjump.skip.activity.LONG_REST
-import nktori.hiitjump.skip.activity.OFF_STEP
-import nktori.hiitjump.skip.activity.REST
+import nktori.hiitjump.skip.exercise.BOXER
+import nktori.hiitjump.skip.exercise.CRISS_CROSS
+import nktori.hiitjump.skip.exercise.HIGH_HARD
+import nktori.hiitjump.skip.exercise.LONG_REST
+import nktori.hiitjump.skip.exercise.OFF_STEP
+import nktori.hiitjump.skip.exercise.REST
 
 class HardWorkout : Workout {
-    override val activities = listOf(
+    override val exercises = listOf(
         BOXER,
         REST,
         OFF_STEP,

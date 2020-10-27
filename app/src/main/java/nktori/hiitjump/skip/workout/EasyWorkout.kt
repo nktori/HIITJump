@@ -1,14 +1,14 @@
 package nktori.hiitjump.skip.workout
 
-import nktori.hiitjump.skip.activity.HIGH_KNEE
-import nktori.hiitjump.skip.activity.LEFT
-import nktori.hiitjump.skip.activity.LONG_REST
-import nktori.hiitjump.skip.activity.REST
-import nktori.hiitjump.skip.activity.RIGHT
-import nktori.hiitjump.skip.activity.STANDARD
+import nktori.hiitjump.skip.exercise.HIGH_KNEE
+import nktori.hiitjump.skip.exercise.LEFT
+import nktori.hiitjump.skip.exercise.LONG_REST
+import nktori.hiitjump.skip.exercise.REST
+import nktori.hiitjump.skip.exercise.RIGHT
+import nktori.hiitjump.skip.exercise.STANDARD
 
 class EasyWorkout : Workout {
-    override val activities = listOf(
+    override val exercises = listOf(
         STANDARD,
         REST,
         RIGHT,

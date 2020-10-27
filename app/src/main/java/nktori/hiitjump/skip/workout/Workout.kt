@@ -1,9 +1,9 @@
 package nktori.hiitjump.skip.workout
 
-import nktori.hiitjump.skip.activity.Activity
+import nktori.hiitjump.skip.exercise.Exercise
 
 interface Workout {
-    val activities: List<Activity>
+    val exercises: List<Exercise>
 
-    fun getTotalLength() = activities.map { it.length }.sum()*5
+    fun getTotalLength() = exercises.map { it.length }.sum()*5
 }

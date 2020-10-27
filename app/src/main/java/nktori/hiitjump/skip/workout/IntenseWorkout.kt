@@ -1,16 +1,16 @@
 package nktori.hiitjump.skip.workout
 
-import nktori.hiitjump.skip.activity.ALT_CRISS_CROSS
-import nktori.hiitjump.skip.activity.BACKWARDS
-import nktori.hiitjump.skip.activity.CRISS_CROSS_INTENSE
-import nktori.hiitjump.skip.activity.DOUBLE_UND
-import nktori.hiitjump.skip.activity.MUMMY
-import nktori.hiitjump.skip.activity.REST_INTENSE
-import nktori.hiitjump.skip.activity.REST_LONG_INTENSE
+import nktori.hiitjump.skip.exercise.ALT_CRISS_CROSS
+import nktori.hiitjump.skip.exercise.BACKWARDS
+import nktori.hiitjump.skip.exercise.CRISS_CROSS_INTENSE
+import nktori.hiitjump.skip.exercise.DOUBLE_UND
+import nktori.hiitjump.skip.exercise.MUMMY
+import nktori.hiitjump.skip.exercise.REST_INTENSE
+import nktori.hiitjump.skip.exercise.REST_LONG_INTENSE
 
 
 class IntenseWorkout : Workout {
-    override val activities = listOf(
+    override val exercises = listOf(
         CRISS_CROSS_INTENSE,
         REST_INTENSE,
         BACKWARDS,
