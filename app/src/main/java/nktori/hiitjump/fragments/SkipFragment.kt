@@ -33,12 +33,12 @@ class SkipFragment : Fragment() {
         val workoutLengthTextView = view.findViewById<TextView>(R.id.workoutLengthText)
         workoutLengthTextView.text = formatTime(skipDifficulty.workout.getTotalLength())
 
-//        view.findViewById<Button>(R.id.button_skip_back).setOnClickListener {
-//            findNavController().navigate(R.id.action_SkipFragment_to_HomeFragment)
-//        }
-
         view.findViewById<Button>(R.id.button_skip_start).setOnClickListener {
             findNavController().navigate(R.id.action_SkipFragment_to_SkipActiveFragment)
+        }
+
+        view.findViewById<Button>(R.id.button_workout_info).setOnClickListener {
+            findNavController().navigate(R.id.action_SkipFragment_to_ExercisesFragment)
         }
     }
 }

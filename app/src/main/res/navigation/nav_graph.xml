@@ -22,6 +22,10 @@
         <action
             android:id="@+id/action_SkipFragment_to_SkipActiveFragment"
             app:destination="@id/SkipActiveFragment" />
+
+        <action
+            android:id="@+id/action_SkipFragment_to_ExercisesFragment"
+            app:destination="@id/ExercisesFragment" />
     </fragment>
     <fragment
         android:id="@+id/SkipActiveFragment"
@@ -31,5 +35,10 @@
         <action
             android:id="@+id/action_SkipActiveFragment_to_SkipFragment"
             app:destination="@id/SkipFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ExercisesFragment"
+        android:name="nktori.hiitjump.fragments.ExercisesFragment"
+        tools:layout="@layout/fragment_exercises">
     </fragment>
 </navigation>
