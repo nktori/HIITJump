@@ -67,20 +67,35 @@ class SkipActiveFragment: Fragment() {
         val skipTimeCount = view.findViewById<TextView>(R.id.skipTimeCount)
         val currentExerciseNameView = view.findViewById<TextView>(R.id.currentExerciseName)
         val currentExerciseTimeView = view.findViewById<TextView>(R.id.currentExerciseTime)
-        MediaPlayer.create(context, currentExercise.audioFile).start()
-        object : CountDownTimer((skipDifficulty.workout.getTotalLength() * 1000).toLong(), 1000) {
+
+        val workoutLength = skipDifficulty.workout.getTotalLength() + 1 // +1 needed for timer
+        val totalLength = ((workoutLength + 3) * 1000).toLong()
+        object : CountDownTimer(totalLength, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 if (!isRunning) cancel()
-                setTime(skipTimeCount, totalSeconds)
-                setExercise(currentExerciseNameView, currentExerciseTimeView)
-                totalSeconds++
-                loopSeconds++
+
+                when {
+                    millisUntilFinished > (workoutLength * 1000) -> {
+                        MediaPlayer.create(context, R.raw.beep).start()
+                    }
+                    millisUntilFinished < (workoutLength * 1000) && millisUntilFinished > ((workoutLength - 1) * 1000) -> {
+                        MediaPlayer.create(context, currentExercise.audioFile).start()
+                    }
+                    else -> {
+                        setTime(skipTimeCount, totalSeconds)
+                        setExercise(currentExerciseNameView, currentExerciseTimeView)
+                        totalSeconds++
+                        loopSeconds++
+                    }
+                }
             }
+
             override fun onFinish() {
                 setTime(skipTimeCount, totalSeconds)
                 currentExerciseNameView.text = getString(R.string.done)
                 currentExerciseTimeView.text = ""
                 finishedButton(view.findViewById(R.id.button_skip_stop))
+                MediaPlayer.create(context, R.raw.beep).start()
             }
         }.start()
     }

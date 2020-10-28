@@ -4,7 +4,7 @@ An Android application to help keep track of a High-Intensity Interval Training 
 
 ## TODO
 
-* Countdown before workout begins
+* Workout information page
 * Cleanup layouts (make more robust, don't hardcode positions)
 * Make design nicer
 * Exercise in notification

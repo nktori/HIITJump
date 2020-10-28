@@ -31,12 +31,7 @@ class SkipFragment : Fragment() {
         difficultTextView.text = skipDifficulty.name
 
         val workoutLengthTextView = view.findViewById<TextView>(R.id.workoutLengthText)
-        workoutLengthTextView.text =
-            formatTime(skipDifficulty.workout.getTotalLength())
-
-        val blackoutCheckbox = view.findViewById<CheckBox>(R.id.checkbox_blackout)
-        blackoutCheckbox.isChecked = true
-        blackoutMode = true
+        workoutLengthTextView.text = formatTime(skipDifficulty.workout.getTotalLength())
 
         view.findViewById<Button>(R.id.button_skip_back).setOnClickListener {
             findNavController().navigate(R.id.action_SkipFragment_to_HomeFragment)
