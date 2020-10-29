@@ -76,10 +76,10 @@ class SkipActiveFragment: Fragment() {
 
                 when {
                     millisUntilFinished > (workoutLength * 1000) -> {
-                        MediaPlayer.create(context, R.raw.beep).start()
+                        playAudio(R.raw.beep)
                     }
                     millisUntilFinished < (workoutLength * 1000) && millisUntilFinished > ((workoutLength - 1) * 1000) -> {
-                        MediaPlayer.create(context, currentExercise.audioFile).start()
+                        playAudio(currentExercise.audioFile)
                     }
                     else -> {
                         setTime(skipTimeCount, totalSeconds)
@@ -95,7 +95,7 @@ class SkipActiveFragment: Fragment() {
                 currentExerciseNameView.text = getString(R.string.done)
                 currentExerciseTimeView.text = ""
                 finishedButton(view.findViewById(R.id.button_skip_stop))
-                MediaPlayer.create(context, R.raw.beep).start()
+                playAudio(R.raw.beep)
             }
         }.start()
     }
@@ -110,7 +110,7 @@ class SkipActiveFragment: Fragment() {
             currentExercise = skipDifficulty.workout.exercises[exerciseIndex]
             nameView.text = currentExercise.name
 
-            MediaPlayer.create(context, currentExercise.audioFile).start()
+            playAudio(currentExercise.audioFile)
         }
         timeView.text = (currentExercise.length - loopSeconds).toString()
     }
@@ -122,5 +122,11 @@ class SkipActiveFragment: Fragment() {
     private fun finishedButton(button: Button) {
         button.text = getString(R.string.back)
         button.background = resources.getDrawable(R.drawable.round_button_grey)
+    }
+
+    private fun playAudio(file: Int) {
+        try {
+            MediaPlayer.create(context, file).start()
+        } catch(e: Exception) {}
     }
 }

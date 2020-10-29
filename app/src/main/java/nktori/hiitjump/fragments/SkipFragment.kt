@@ -27,13 +27,14 @@ class SkipFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val difficultTextView = view.findViewById<TextView>(R.id.skipDifficultyText)
-        difficultTextView.text = skipDifficulty.name
+        view.findViewById<TextView>(R.id.skipDifficultyText).text = skipDifficulty.name
 
-        val workoutLengthTextView = view.findViewById<TextView>(R.id.workoutLengthText)
-        workoutLengthTextView.text = formatTime(skipDifficulty.workout.getTotalLength())
+        view.findViewById<TextView>(R.id.workoutLengthText).text = formatTime(skipDifficulty.workout.getTotalLength())
+
+        view.findViewById<CheckBox>(R.id.checkbox_blackout).isChecked = false
 
         view.findViewById<Button>(R.id.button_skip_start).setOnClickListener {
+            blackoutMode = view.findViewById<CheckBox>(R.id.checkbox_blackout).isChecked
             findNavController().navigate(R.id.action_SkipFragment_to_SkipActiveFragment)
         }
 

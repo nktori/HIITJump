@@ -57,7 +57,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="175dp"
         android:text="@string/blackoutMode"
-        android:onClick="onCheckboxClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.50"
