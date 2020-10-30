@@ -6,6 +6,7 @@ import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -30,12 +31,14 @@ class SkipActiveFragment: Fragment() {
             (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
             activity?.window?.statusBarColor = activity?.resources?.getColor(R.color.blackout)!!
         }
+        activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
     override fun onStop() {
         super.onStop()
         (activity as AppCompatActivity?)!!.supportActionBar!!.show()
         activity?.window?.statusBarColor = activity?.resources?.getColor(R.color.colorPrimaryDark)!!
+        activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
     override fun onCreateView(
