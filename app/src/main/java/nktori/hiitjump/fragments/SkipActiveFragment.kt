@@ -30,6 +30,8 @@ class SkipActiveFragment: Fragment() {
         if (blackoutMode) {
             (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
             activity?.window?.statusBarColor = activity?.resources?.getColor(R.color.blackout)!!
+            activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+            activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN)
         }
         activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
@@ -38,6 +40,8 @@ class SkipActiveFragment: Fragment() {
         super.onStop()
         (activity as AppCompatActivity?)!!.supportActionBar!!.show()
         activity?.window?.statusBarColor = activity?.resources?.getColor(R.color.colorPrimaryDark)!!
+        activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN)
         activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
