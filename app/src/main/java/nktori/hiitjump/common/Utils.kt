@@ -6,3 +6,5 @@ fun formatTime(time: Int): String {
 
     return String.format("%02d:%02d", minutes, secs)
 }
+
+var isActive = false

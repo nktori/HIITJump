@@ -1,8 +1,10 @@
 package nktori.hiitjump.fragments
 
-import android.media.MediaPlayer
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,15 +17,42 @@ import androidx.navigation.fragment.findNavController
 import nktori.hiitjump.R
 import nktori.hiitjump.blackoutMode
 import nktori.hiitjump.common.formatTime
+import nktori.hiitjump.common.isActive
+import nktori.hiitjump.services.SkipService
 import nktori.hiitjump.skipDifficulty
 
 class SkipActiveFragment: Fragment() {
 
-    private var totalSeconds = 0
-    private var loopSeconds = 0
     private var exerciseIndex = 0
     private var currentExercise = skipDifficulty.workout.exercises[exerciseIndex]
-    private var isRunning = false
+
+    lateinit var skipTimeCountView: TextView
+    lateinit var currentExerciseNameView: TextView
+    lateinit var currentExerciseTimeView: TextView
+
+    private val broadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val extras = intent.extras
+            val totalTime = extras?.get("totalTime")
+            val loopTime = extras?.get("loopTime")
+            val exerciseName = extras?.get("exerciseName")
+
+            if (totalTime != null) {
+                skipTimeCountView.text = formatTime(extras["totalTime"] as Int)
+            }
+            if (extras?.get("finished") != null) {
+                currentExerciseNameView.text = getString(R.string.done)
+                currentExerciseTimeView.text = ""
+                setFinishedButton()
+                SkipService.stopService(context)
+            } else {
+                exerciseName.let {
+                    if (it != null) setExercise(exerciseName as String, loopTime as Int)
+                    else setExercise(null, loopTime as Int)
+                }
+            }
+        }
+    }
 
     override fun onResume() {
         super.onResume()
@@ -34,6 +63,8 @@ class SkipActiveFragment: Fragment() {
             activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN)
         }
         activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+
+        context!!.registerReceiver(broadcastReceiver, IntentFilter("workout-update"))
     }
 
     override fun onStop() {
@@ -43,11 +74,13 @@ class SkipActiveFragment: Fragment() {
         activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
         activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN)
         activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+
+        context!!.unregisterReceiver(broadcastReceiver);
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         var layout = R.layout.fragment_skip_active
         if (blackoutMode) {
@@ -59,81 +92,31 @@ class SkipActiveFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        skipTimeCountView = view.findViewById(R.id.skipTimeCount)
+        currentExerciseNameView = view.findViewById(R.id.currentExerciseName)
+        currentExerciseTimeView = view.findViewById(R.id.currentExerciseTime)
+
         view.findViewById<Button>(R.id.button_skip_stop).setOnClickListener {
-            isRunning = false
+            isActive = false
+            SkipService.stopService(context!!)
             findNavController().navigate(R.id.action_SkipActiveFragment_to_SkipFragment)
         }
 
-        setTime(view.findViewById(R.id.skipTimeTotal), skipDifficulty.workout.getTotalLength())
+        view.findViewById<TextView>(R.id.skipTimeTotal).text = formatTime(skipDifficulty.workout.getTotalLength())
+
         view.findViewById<TextView>(R.id.currentExerciseName).text = currentExercise.name
-        workoutTimer(view)
+        isActive = true
+        SkipService.startService(context!!, "Skip Service in running")
     }
 
-    private fun workoutTimer(view: View) {
-        isRunning = true
-        val skipTimeCount = view.findViewById<TextView>(R.id.skipTimeCount)
-        val currentExerciseNameView = view.findViewById<TextView>(R.id.currentExerciseName)
-        val currentExerciseTimeView = view.findViewById<TextView>(R.id.currentExerciseTime)
-
-        val workoutLength = skipDifficulty.workout.getTotalLength() + 1 // +1 needed for timer
-        val totalLength = ((workoutLength + 3) * 1000).toLong()
-        object : CountDownTimer(totalLength, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                if (!isRunning) cancel()
-
-                when {
-                    millisUntilFinished > (workoutLength * 1000) -> {
-                        playAudio(R.raw.beep)
-                    }
-                    millisUntilFinished < (workoutLength * 1000) && millisUntilFinished > ((workoutLength - 1) * 1000) -> {
-                        playAudio(currentExercise.audioFile)
-                    }
-                    else -> {
-                        setTime(skipTimeCount, totalSeconds)
-                        setExercise(currentExerciseNameView, currentExerciseTimeView)
-                        totalSeconds++
-                        loopSeconds++
-                    }
-                }
-            }
-
-            override fun onFinish() {
-                setTime(skipTimeCount, totalSeconds)
-                currentExerciseNameView.text = getString(R.string.done)
-                currentExerciseTimeView.text = ""
-                finishedButton(view.findViewById(R.id.button_skip_stop))
-                playAudio(R.raw.beep)
-            }
-        }.start()
+    private fun setExercise(exerciseName: String?, loopSeconds: Int) {
+        if (exerciseName != null && exerciseName != currentExerciseNameView.text) currentExerciseNameView.text = exerciseName
+        currentExerciseTimeView.text = loopSeconds.toString()
     }
 
-    private fun setExercise(nameView: TextView, timeView: TextView) {
-        if (loopSeconds == skipDifficulty.workout.exercises[exerciseIndex].length) {
-            loopSeconds = 0
-            exerciseIndex++
-            if (exerciseIndex == skipDifficulty.workout.exercises.size) {
-                exerciseIndex = 0
-            }
-            currentExercise = skipDifficulty.workout.exercises[exerciseIndex]
-            nameView.text = currentExercise.name
-
-            playAudio(currentExercise.audioFile)
-        }
-        timeView.text = (currentExercise.length - loopSeconds).toString()
-    }
-
-    private fun setTime(textView: TextView, time: Int) {
-        textView.text = formatTime(time)
-    }
-
-    private fun finishedButton(button: Button) {
+    private fun setFinishedButton() {
+        val button = view!!.findViewById<Button>(R.id.button_skip_stop)
         button.text = getString(R.string.back)
         button.background = resources.getDrawable(R.drawable.round_button_grey)
-    }
-
-    private fun playAudio(file: Int) {
-        try {
-            MediaPlayer.create(context, file).start()
-        } catch(e: Exception) {}
     }
 }
