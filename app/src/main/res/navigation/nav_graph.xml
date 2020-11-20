@@ -20,6 +20,10 @@
         tools:layout="@layout/fragment_skip">
 
         <action
+            android:id="@+id/action_SkipFragment_to_HomeFragment"
+            app:destination="@id/HomeFragment" />
+
+        <action
             android:id="@+id/action_SkipFragment_to_SkipActiveFragment"
             app:destination="@id/SkipActiveFragment" />
 

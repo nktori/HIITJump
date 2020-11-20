@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.TextView
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import nktori.hiitjump.R
@@ -21,6 +22,11 @@ class SkipFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         blackoutMode = false
+
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            findNavController().navigate(R.id.action_SkipFragment_to_HomeFragment)
+        }
+
         return inflater.inflate(R.layout.fragment_skip, container, false)
     }
 

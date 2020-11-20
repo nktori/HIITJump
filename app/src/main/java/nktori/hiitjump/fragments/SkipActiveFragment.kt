@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
+import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -86,6 +87,15 @@ class SkipActiveFragment: Fragment() {
         if (blackoutMode) {
             layout = R.layout.fragment_skip_active_blackout
         }
+
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            findNavController().navigate(R.id.action_SkipActiveFragment_to_SkipFragment)
+            if (isActive) {
+                isActive = false
+                SkipService.stopService(context!!)
+            }
+        }
+
         return inflater.inflate(layout, container, false)
     }
 
